@@ -65,7 +65,9 @@ Un matiz de diseño relevante: el estado del expediente externo **no sustituye**
 
 Para ilustrar qué tipo de lectura habilita este modelo de datos bien estructurado, construí un dashboard interactivo con datos **sintéticos** (no reales): actuaciones por isla, tiempo medio de resolución, carga de trabajo por técnico y ejecución presupuestaria.
 
-Ver → [`docs/dashboard.html`](docs/dashboard.html)
+![Dashboard analítico](assets/dashboard.png)
+
+Ver versión interactiva → [`docs/dashboard.html`](docs/dashboard.html) (ábrelo en el navegador, requiere conexión a internet para cargar Chart.js)
 
 ## Stack
 
@@ -85,5 +87,3 @@ sie-baleares-case-study/
 │   ├── permisos.md            matriz de permisos por perfil × fase
 │   └── dashboard.html         dashboard interactivo (datos sintéticos)
 └── assets/
-    └── (capturas propias, no originales del cliente)
-```
