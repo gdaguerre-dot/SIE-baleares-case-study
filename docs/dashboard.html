@@ -82,16 +82,20 @@ function render(illa){
     <div class="kpi"><p>Dies mitjans resolucio</p><p>${d.avg_dies}</p></div>
     <div class="kpi"><p>Pressupost total</p><p>${fmtCur(d.pressupost_total)}</p></div>
     <div class="kpi"><p>Assumit pel centre</p><p>${d.pct_assumit}%</p></div>`;
-  const stateLabels = Object.keys(d.superestat);
+  const STATE_ORDER = ['Pendent','En procés','Resolta'];
+  const stateLabels = STATE_ORDER.filter(k => k in d.superestat);
+  const stateData = stateLabels.map(k => d.superestat[k]);
   charts.state = new Chart(document.getElementById('cState'), {
     type:'doughnut',
-    data:{labels:stateLabels, datasets:[{data:Object.values(d.superestat), backgroundColor:COVE.slice(0,stateLabels.length), borderColor:'#fff', borderWidth:2}]},
+    data:{labels:stateLabels, datasets:[{data:stateData, backgroundColor:COVE.slice(0,stateLabels.length), borderColor:'#fff', borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}}}
   });
-  const priorLabels = Object.keys(d.prioritat);
+  const PRIOR_ORDER = ['Baixa','Mitjana','Alta'];
+  const priorLabels = PRIOR_ORDER.filter(k => k in d.prioritat);
+  const priorData = priorLabels.map(k => d.prioritat[k]);
   charts.prior = new Chart(document.getElementById('cPrior'), {
     type:'doughnut',
-    data:{labels:priorLabels, datasets:[{data:Object.values(d.prioritat), backgroundColor:COVE.slice(0,priorLabels.length), borderColor:'#fff', borderWidth:2}]},
+    data:{labels:priorLabels, datasets:[{data:priorData, backgroundColor:COVE.slice(0,priorLabels.length), borderColor:'#fff', borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}}}
   });
   charts.tipus = new Chart(document.getElementById('cTipus'), {
