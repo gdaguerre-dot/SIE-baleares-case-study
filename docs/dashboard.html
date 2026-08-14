@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard analitic - SIE Balears (dades sintetiques)</title>
+<style>
+  :root{
+    --bg:#fafaf8; --card:#ffffff; --border:#e5e3dc; --text:#1a1a18;
+    --text2:#5c5b56; --text3:#8a8880; --accent:#2a78d6;
+  }
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);margin:0;padding:2rem;}
+  .wrap{max-width:960px;margin:0 auto;}
+  h1{font-size:22px;font-weight:600;margin:0 0 4px;}
+  .subtitle{color:var(--text3);font-size:13px;margin:0 0 24px;}
+  .controls{display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+  select{padding:8px 12px;border-radius:8px;border:1px solid var(--border);font-size:14px;background:#fff;}
+  .badge{margin-left:auto;font-size:12px;color:var(--text3);}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:28px;}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .kpi p:first-child{font-size:12px;color:var(--text2);margin:0 0 6px;}
+  .kpi p:last-child{font-size:24px;font-weight:600;margin:0;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;}
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+  .panel h3{font-size:13px;color:var(--text2);font-weight:500;margin:0 0 12px;}
+  canvas{max-width:100%;}
+  footer{font-size:11px;color:var(--text3);margin-top:24px;border-top:1px solid var(--border);padding-top:12px;}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Actuacions d'infraestructura educativa</h1>
+  <p class="subtitle">Dashboard analitic — dades sintetiques inspirades en patrons reals, no corresponen a centres, tecnics o expedients reals.</p>
+
+  <div class="controls">
+    <label for="illaSel" style="font-size:13px;color:var(--text2)">Illa</label>
+    <select id="illaSel">
+      <option>Totes</option><option>Mallorca</option><option>Menorca</option><option>Eivissa</option><option>Formentera</option>
+    </select>
+    <span class="badge">620 actuacions sintetiques</span>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid2">
+    <div class="panel">
+      <h3>Actuacions per estat</h3>
+      <div style="position:relative;height:220px"><canvas id="cState"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>Prioritat</h3>
+      <div style="position:relative;height:220px"><canvas id="cPrior"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:24px">
+    <h3>Tipus d'actuacio mes frequents</h3>
+    <div style="position:relative;height:240px"><canvas id="cTipus"></canvas></div>
+  </div>
+
+  <div class="panel">
+    <h3>Carrega de feina per tecnic</h3>
+    <div style="position:relative;height:240px"><canvas id="cTecnic"></canvas></div>
+  </div>
+
+  <footer>Proyecto de portfolio — modelo de datos y dashboard basados en el diseño de un sistema real, con datos sintéticos por confidencialidad.</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const AGG = {"Totes": {"total": 620, "pct_resolt": 43.7, "avg_dies": 17.5, "pressupost_total": 1844138.0, "pct_assumit": 30.0, "superestat": {"En proc\u00e9s": 205, "Pendent": 144, "Resolta": 271}, "top_tipus": [["Menjadors i cuines", 60], ["Fa\u00e7anes i estructures exteriors", 58], ["Electricitat", 49], ["Consulta t\u00e8cnica", 48], ["Reformes i millores generals", 45], ["Habilitaci\u00f3 d'espais", 43]], "tecnic": [["T\u00e8cnic A", 172], ["T\u00e8cnic B", 141], ["T\u00e8cnic C", 102], ["T\u00e8cnic D", 76], ["T\u00e8cnic E", 59], ["T\u00e8cnic F", 43], ["T\u00e8cnic G", 27]], "prioritat": {"Baixa": 470, "Alta": 49, "Mitjana": 101}}, "Mallorca": {"total": 426, "pct_resolt": 44.6, "avg_dies": 17.6, "pressupost_total": 1188920.0, "pct_assumit": 27.9, "superestat": {"En proc\u00e9s": 150, "Pendent": 86, "Resolta": 190}, "top_tipus": [["Fa\u00e7anes i estructures exteriors", 45], ["Menjadors i cuines", 39], ["Consulta t\u00e8cnica", 34], ["Goteres i impermeabilitzacions", 32], ["Habilitaci\u00f3 d'espais", 31], ["Reformes i millores generals", 31]], "tecnic": [["T\u00e8cnic A", 112], ["T\u00e8cnic B", 104], ["T\u00e8cnic C", 74], ["T\u00e8cnic D", 42], ["T\u00e8cnic E", 43], ["T\u00e8cnic F", 31], ["T\u00e8cnic G", 20]], "prioritat": {"Baixa": 325, "Alta": 36, "Mitjana": 65}}, "Menorca": {"total": 74, "pct_resolt": 50.0, "avg_dies": 17.4, "pressupost_total": 266513.0, "pct_assumit": 29.7, "superestat": {"Pendent": 17, "En proc\u00e9s": 20, "Resolta": 37}, "top_tipus": [["Electricitat", 10], ["Reformes i millores generals", 9], ["Menjadors i cuines", 8], ["Paviments i accessos", 6], ["Habilitaci\u00f3 d'espais", 6], ["Banys i sanejament", 6]], "tecnic": [["T\u00e8cnic A", 21], ["T\u00e8cnic B", 15], ["T\u00e8cnic C", 12], ["T\u00e8cnic D", 13], ["T\u00e8cnic E", 6], ["T\u00e8cnic F", 5], ["T\u00e8cnic G", 2]], "prioritat": {"Baixa": 52, "Mitjana": 16, "Alta": 6}}, "Eivissa": {"total": 99, "pct_resolt": 37.4, "avg_dies": 18.1, "pressupost_total": 342910.0, "pct_assumit": 36.4, "superestat": {"Pendent": 33, "En proc\u00e9s": 29, "Resolta": 37}, "top_tipus": [["Menjadors i cuines", 11], ["Climatitzaci\u00f3", 9], ["Fa\u00e7anes i estructures exteriors", 9], ["Consulta t\u00e8cnica", 9], ["Jocs de pati i espais d'esbarjo", 9], ["Ombres i protecci\u00f3 solar", 7]], "tecnic": [["T\u00e8cnic A", 33], ["T\u00e8cnic B", 18], ["T\u00e8cnic C", 11], ["T\u00e8cnic D", 17], ["T\u00e8cnic E", 9], ["T\u00e8cnic F", 7], ["T\u00e8cnic G", 4]], "prioritat": {"Baixa": 74, "Mitjana": 18, "Alta": 7}}, "Formentera": {"total": 21, "pct_resolt": 33.3, "avg_dies": 13.0, "pressupost_total": 45796.0, "pct_assumit": 42.9, "superestat": {"Pendent": 8, "En proc\u00e9s": 6, "Resolta": 7}, "top_tipus": [["Banys i sanejament", 3], ["Electricitat", 3], ["Paviments i accessos", 3], ["Jocs de pati i espais d'esbarjo", 2], ["Menjadors i cuines", 2], ["Climatitzaci\u00f3", 2]], "tecnic": [["T\u00e8cnic A", 6], ["T\u00e8cnic B", 4], ["T\u00e8cnic C", 5], ["T\u00e8cnic D", 4], ["T\u00e8cnic E", 1], ["T\u00e8cnic F", 0], ["T\u00e8cnic G", 1]], "prioritat": {"Baixa": 19, "Mitjana": 2}}};
+const COVE = ['#2a78d6','#eb6834','#1baf7a','#eda100','#e87ba4','#008300','#4a3aa7','#e34948'];
+let charts = {};
+function fmtCur(v){ return new Intl.NumberFormat('ca-ES',{maximumFractionDigits:0}).format(v)+' \u20ac'; }
+function destroyAll(){ Object.values(charts).forEach(c=>c && c.destroy()); }
+function render(illa){
+  const d = AGG[illa];
+  destroyAll();
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><p>Actuacions</p><p>${d.total}</p></div>
+    <div class="kpi"><p>Resoltes</p><p>${d.pct_resolt}%</p></div>
+    <div class="kpi"><p>Dies mitjans resolucio</p><p>${d.avg_dies}</p></div>
+    <div class="kpi"><p>Pressupost total</p><p>${fmtCur(d.pressupost_total)}</p></div>
+    <div class="kpi"><p>Assumit pel centre</p><p>${d.pct_assumit}%</p></div>`;
+  const stateLabels = Object.keys(d.superestat);
+  charts.state = new Chart(document.getElementById('cState'), {
+    type:'doughnut',
+    data:{labels:stateLabels, datasets:[{data:Object.values(d.superestat), backgroundColor:COVE.slice(0,stateLabels.length), borderColor:'#fff', borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}}}
+  });
+  const priorLabels = Object.keys(d.prioritat);
+  charts.prior = new Chart(document.getElementById('cPrior'), {
+    type:'doughnut',
+    data:{labels:priorLabels, datasets:[{data:Object.values(d.prioritat), backgroundColor:COVE.slice(0,priorLabels.length), borderColor:'#fff', borderWidth:2}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:11}}}}}
+  });
+  charts.tipus = new Chart(document.getElementById('cTipus'), {
+    type:'bar',
+    data:{labels:d.top_tipus.map(x=>x[0]), datasets:[{data:d.top_tipus.map(x=>x[1]), backgroundColor:'#2a78d6', borderRadius:4, maxBarThickness:24}]},
+    options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,grid:{color:'#eee'}},y:{grid:{display:false},ticks:{font:{size:11}}}}}
+  });
+  charts.tecnic = new Chart(document.getElementById('cTecnic'), {
+    type:'bar',
+    data:{labels:d.tecnic.map(x=>x[0]), datasets:[{data:d.tecnic.map(x=>x[1]), backgroundColor:'#1baf7a', borderRadius:4, maxBarThickness:32}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#eee'}},x:{grid:{display:false},ticks:{font:{size:11}}}}}
+  });
+}
+document.getElementById('illaSel').addEventListener('change', e=>render(e.target.value));
+render('Totes');
+</script>
+</body>
+</html>
