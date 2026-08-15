@@ -67,7 +67,7 @@ Para ilustrar qué tipo de lectura habilita este modelo de datos bien estructura
 
 ![Dashboard analítico](assets/dashboard.png)
 
-Ver versión interactiva → [`docs/dashboard.html`](docs/dashboard.html) (ábrelo en el navegador, requiere conexión a internet para cargar Chart.js)
+Ver versión interactiva → [gdaguerre-dot.github.io/SIE-baleares-case-study/dashboard.html](https://gdaguerre-dot.github.io/SIE-baleares-case-study/dashboard.html)
 
 ## Stack
 
@@ -78,7 +78,8 @@ Ver versión interactiva → [`docs/dashboard.html`](docs/dashboard.html) (ábre
 
 ## Sitio publicado
 
-→ ** https://gdaguerre-dot.github.io/SIE-baleares-case-study/ ** 
+→ **[gdaguerre-dot.github.io/SIE-baleares-case-study](https://gdaguerre-dot.github.io/SIE-baleares-case-study/)**
+
 ## Estructura del repositorio
 
 ```
@@ -95,4 +96,3 @@ sie-baleares-case-study/
     └── assets/
         └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
 ```
-
