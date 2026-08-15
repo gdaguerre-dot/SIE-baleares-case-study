@@ -15,7 +15,7 @@ El proyecto en el que participé cubre dos frentes relacionados:
 
 ## Mi rol
 
-Participé en el diseño e implementación del modelo de datos y del flujo de negocio que sostiene este sistema: modelado relacional, definición de la máquina de estados, especificación de la integración con sistemas externos y traducción de los requisitos funcionales de la Conselleria a un modelo técnico sostenible.
+Diseñé, junto al equipo de AYESA, el modelo de datos y el flujo de negocio que sostiene este sistema: modelado relacional, definición de la máquina de estados, especificación de la integración con sistemas externos y traducción de los requisitos funcionales de la Conselleria a un modelo técnico sostenible.
 
 ## 1. Arquitectura de datos
 
@@ -69,6 +69,10 @@ Para ilustrar qué tipo de lectura habilita este modelo de datos bien estructura
 
 Ver versión interactiva → [gdaguerre-dot.github.io/SIE-baleares-case-study/dashboard.html](https://gdaguerre-dot.github.io/SIE-baleares-case-study/dashboard.html)
 
+## 6. Proceso de QA
+
+El dashboard tuvo un bug real en producción — detectado por reporte de usuario, diagnosticado con un test automatizado (Playwright) en vez de conjeturas, y corregido. La historia completa, con la causa raíz real (interferencia entre la traducción automática del navegador y el `<select>` de islas), está documentada en [`qa/README.md`](qa/README.md).
+
 ## Stack
 
 - **Base de datos**: MySQL / MariaDB, modelo relacional normalizado
@@ -87,12 +91,16 @@ sie-baleares-case-study/
 ├── README.md                  este documento
 ├── assets/
 │   └── dashboard.png          captura para este README
-└── docs/                      publicado vía GitHub Pages
-    ├── index.html             portada del case study
-    ├── dashboard.html         dashboard interactivo (datos sintéticos)
-    ├── er-diagram.md          modelo entidad-relación (Mermaid)
-    ├── state-machine.md       flujo de estados y fases (Mermaid)
-    ├── permisos.md            matriz de permisos por perfil × fase
-    └── assets/
-        └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
+├── docs/                      publicado vía GitHub Pages
+│   ├── index.html             portada del case study
+│   ├── dashboard.html         dashboard interactivo (datos sintéticos)
+│   ├── er-diagram.md          modelo entidad-relación (Mermaid)
+│   ├── state-machine.md       flujo de estados y fases (Mermaid)
+│   ├── permisos.md            matriz de permisos por perfil × fase
+│   └── assets/
+│       └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
+└── qa/                        proceso de detección y corrección de un bug real
+    ├── README.md               la historia del bug, diagnóstico y fix
+    ├── test-select-illa.js     test automatizado (Playwright)
+    └── mock_chart.js           stub usado para testear sin depender del CDN
 ```
