@@ -97,9 +97,9 @@ sie-baleares-case-study/
 │   ├── er-diagram.md          modelo entidad-relación (Mermaid)
 │   ├── state-machine.md       flujo de estados y fases (Mermaid)
 │   ├── permisos.md            matriz de permisos por perfil × fase
-│   └── assets/
-│       └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
-└── qa/                        proceso de detección y corrección de un bug real
+│   
+│         
+└── qa/                       
     ├── README.md               la historia del bug, diagnóstico y fix
     ├── test-select-illa.js     test automatizado (Playwright)
     └── mock_chart.js           stub usado para testear sin depender del CDN
