@@ -76,14 +76,24 @@ Ver versión interactiva → [`docs/dashboard.html`](docs/dashboard.html) (ábre
 - **Integraciones**: consumo de web service REST externo, sincronización periódica
 - **Analítica**: modelado dimensional para reporting (por isla, municipio, tipo de actuación, técnico)
 
+## Sitio publicado
+
+→ **[gdaguerre.github.io/sie-baleares-case-study](https://tuusuario.github.io/sie-baleares-case-study/)** *(reemplazar con tu URL real de GitHub Pages)*
+
 ## Estructura del repositorio
 
 ```
 sie-baleares-case-study/
 ├── README.md                  este documento
-├── docs/
-│   ├── er-diagram.md          modelo entidad-relación (Mermaid)
-│   ├── state-machine.md       flujo de estados y fases (Mermaid)
-│   ├── permisos.md            matriz de permisos por perfil × fase
-│   └── dashboard.html         dashboard interactivo (datos sintéticos)
-└── assets/
+├── assets/
+│   └── dashboard.png          captura para este README
+└── docs/                      publicado vía GitHub Pages
+    ├── index.html             portada del case study
+    ├── dashboard.html         dashboard interactivo (datos sintéticos)
+    ├── er-diagram.md          modelo entidad-relación (Mermaid)
+    ├── state-machine.md       flujo de estados y fases (Mermaid)
+    ├── permisos.md            matriz de permisos por perfil × fase
+    └── assets/
+        └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
+```
+
