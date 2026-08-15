@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="ca" translate="no">
 <head>
 <meta charset="UTF-8">
+<meta name="google" content="notranslate">
 <title>Dashboard analitic - SIE Balears (dades sintetiques)</title>
 <style>
   :root{
@@ -34,8 +35,8 @@
 
   <div class="controls">
     <label for="illaSel" style="font-size:13px;color:var(--text2)">Illa</label>
-    <select id="illaSel">
-      <option>Totes</option><option>Mallorca</option><option>Menorca</option><option>Eivissa</option><option>Formentera</option>
+    <select id="illaSel" translate="no">
+      <option value="Totes" translate="no">Totes</option><option value="Mallorca" translate="no">Mallorca</option><option value="Menorca" translate="no">Menorca</option><option value="Eivissa" translate="no">Eivissa</option><option value="Formentera" translate="no">Formentera</option>
     </select>
     <span class="badge">620 actuacions sintetiques</span>
   </div>
@@ -74,7 +75,7 @@ let charts = {};
 function fmtCur(v){ return new Intl.NumberFormat('ca-ES',{maximumFractionDigits:0}).format(v)+' \u20ac'; }
 function destroyAll(){ Object.values(charts).forEach(c=>c && c.destroy()); }
 function render(illa){
-  const d = AGG[illa];
+  const d = AGG[illa] || AGG['Totes'];
   destroyAll();
   document.getElementById('kpis').innerHTML = `
     <div class="kpi"><p>Actuacions</p><p>${d.total}</p></div>
