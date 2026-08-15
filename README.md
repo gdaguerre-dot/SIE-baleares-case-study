@@ -78,8 +78,7 @@ Ver versión interactiva → [`docs/dashboard.html`](docs/dashboard.html) (ábre
 
 ## Sitio publicado
 
-→ **[gdaguerre.github.io/sie-baleares-case-study](https://tuusuario.github.io/sie-baleares-case-study/)** *(reemplazar con tu URL real de GitHub Pages)*
-
+→ ** https://gdaguerre-dot.github.io/SIE-baleares-case-study/ ** 
 ## Estructura del repositorio
 
 ```
