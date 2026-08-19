@@ -1,20 +1,7 @@
 -- ============================================================================
--- Exploración inicial de un esquema desconocido — replicando en SQL puro
--- lo que se hizo originalmente con Python/regex sobre el archivo de texto.
---
--- No modifica nada. Solo consultas de lectura contra el catálogo del motor
--- (information_schema — estándar ANSI, funciona igual en PostgreSQL y en
--- SQL Server, con las notas de adaptación marcadas donde corresponde).
---
--- Requiere tener ya cargada la base (ver bd_sie_postgres.sql / instrucciones
--- de importación). Ejecutar contra el esquema "sie_real".
+-- Exploración inicial de un esquema desconocido 
 -- ============================================================================
-
--- Postgres: fijar el esquema de trabajo (en SQL Server no existe SET search_path;
--- ahí se usa el prefijo esquema.tabla directamente, ej. sie_real.actuacions)
 SET search_path TO sie_real;
-
-
 -- ============================================================================
 -- 1. ¿Cuántas tablas tiene este esquema, y cómo se llaman?
 --    (esto es lo primero que se corrió sobre el archivo original con
@@ -23,7 +10,7 @@ SET search_path TO sie_real;
 
 SELECT table_name
 FROM information_schema.tables
-WHERE table_schema = 'sie_real'      -- SQL Server: cambiar por el schema/DB que corresponda
+WHERE table_schema = 'sie_real'      
   AND table_type = 'BASE TABLE'
 ORDER BY table_name;
 
@@ -32,10 +19,8 @@ SELECT COUNT(*) AS n_tablas
 FROM information_schema.tables
 WHERE table_schema = 'sie_real' AND table_type = 'BASE TABLE';
 
-
 -- ============================================================================
 -- 2. ¿Qué columnas tiene cada tabla, y de qué tipo?
---    (equivalente a haber mirado cada CREATE TABLE del archivo original)
 -- ============================================================================
 
 SELECT table_name, column_name, data_type, is_nullable, column_default
@@ -57,15 +42,9 @@ FROM information_schema.columns
 WHERE table_schema = 'sie_real' AND table_name = 'actuacions'
 ORDER BY ordinal_position;
 
-
 -- ============================================================================
 -- 3. ¿Cuántas filas tiene cada tabla?
---    (equivalente a los conteos de INSERTs que se hicieron con regex sobre
---     el texto del dump original)
 -- ============================================================================
-
--- Portable (funciona igual en Postgres y en SQL Server): una fila por tabla,
--- hay que listarlas a mano una vez que ya se sabe cuáles son (paso 1).
 SELECT 'illa' AS tabla, COUNT(*) AS filas FROM illa
 UNION ALL SELECT 'municipi', COUNT(*) FROM municipi
 UNION ALL SELECT 'centres', COUNT(*) FROM centres
@@ -117,7 +96,6 @@ END $$;
 -- (el resultado aparece en la pestaña "Messages"/"Notices" de pgAdmin, no como
 --  una tabla de resultados — es normal, así funciona RAISE NOTICE)
 
-
 -- ============================================================================
 -- 4. ¿Qué tablas están vacías? (catálogos sin poblar — hallazgo real que
 --    se detectó en el análisis inicial: tipus_centre_educatiu, comissio_seguiment)
@@ -130,7 +108,6 @@ HAVING COUNT(*) = 0;
 -- Nota: HAVING sin GROUP BY funciona en Postgres tratando todo el resultado
 -- como un solo grupo; en SQL Server también es válido. Si el motor se queja,
 -- envolver en un WHERE aparte sobre una subconsulta como alternativa portable.
-
 
 -- ============================================================================
 -- 5. Relaciones entre tablas (claves foráneas) — el "mapa" de FKs que se
@@ -151,7 +128,6 @@ JOIN information_schema.constraint_column_usage ccu
     ON tc.constraint_name = ccu.constraint_name AND tc.table_schema = ccu.table_schema
 WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = 'sie_real'
 ORDER BY tabla_origen, columna_fk;
-
 
 -- ============================================================================
 -- 6. Calidad de datos: nulos por columna en la tabla más importante
