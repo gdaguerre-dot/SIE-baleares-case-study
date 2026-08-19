@@ -1,24 +1,14 @@
 -- ============================================================================
--- SIE Balears — EDA sobre la base de datos REAL (esquema "sie_real")
---
--- REGLA DE DISEÑO DE ESTE SCRIPT: ninguna consulta selecciona columnas con
--- datos personales o texto libre potencialmente identificable. Se evita
--- explícitamente:
+-- SIE Balears — EDA sobre la base de datos REAL 
+-- Ninguna consulta selecciona columnas con datos personales o texto libre potencialmente identificable. 
+-- Se evita explícitamente:
 --   centres.email, centres.Telefon, centres.Fax   (contacto de personas)
 --   actuacions.descripcio, actuacions.observacions (texto libre con nombres)
 --   seguiment_actuacio.accio, informe_actuacio.observacions (idem)
 --   tecnic.nom                                     (nombres reales del equipo)
 --   document*.nom / url                            (nombres de archivo, URLs internas)
---
--- Todo lo demás (conteos, fechas, importes, estados, geografía) es seguro
--- de mostrar y de subir a un repositorio público — no identifica personas.
---
--- Este script SÍ puede ir al repositorio de Git. Los RESULTADOS de correrlo
--- (capturas, exports a CSV) NO deben subirse a ningún lado público.
 -- ============================================================================
-
 SET search_path TO sie_real;
-
 -- ============================================================================
 -- 1. Panorama general
 -- ============================================================================
@@ -34,7 +24,6 @@ UNION ALL SELECT 'conveni', COUNT(*) FROM conveni;
 -- rango de fechas real cubierto por los datos
 SELECT MIN(data_entrada) AS primera_actuacio, MAX(data_entrada) AS ultima_actuacio
 FROM actuacions;
-
 
 -- ============================================================================
 -- 2. Calidad de datos (el mismo tipo de hallazgo que motivó el case study)
@@ -63,7 +52,6 @@ SELECT 'tipus_centre_educatiu' AS catalogo, COUNT(*) FROM tipus_centre_educatiu
 UNION ALL SELECT 'comissio_seguiment', COUNT(*) FROM comissio_seguiment
 UNION ALL SELECT 'mode_enviament', COUNT(*) FROM mode_enviament;
 
-
 -- ============================================================================
 -- 3. Distribución geográfica (JOIN illa -> municipi -> centres -> actuacions)
 -- ============================================================================
@@ -90,7 +78,6 @@ GROUP BY m.nom, i.nom
 ORDER BY actuaciones DESC
 LIMIT 10;
 
-
 -- ============================================================================
 -- 4. Flujo de estados (superestat -> estat)
 -- ============================================================================
@@ -116,7 +103,6 @@ JOIN tipus_actuacio ta    ON ta.id = sa.tipus_id
 WHERE a.data_enviament IS NOT NULL
 GROUP BY ta.nom
 ORDER BY dias_promedio_hasta_envio DESC;
-
 
 -- ============================================================================
 -- 5. Prioridad y presupuesto
@@ -145,7 +131,6 @@ FROM actuacions
 GROUP BY 1
 ORDER BY MIN(pressupost);
 
-
 -- ============================================================================
 -- 6. Convenios con ayuntamientos
 -- ============================================================================
@@ -162,9 +147,8 @@ LEFT JOIN pagament_conveni pc ON pc.conveni_id = cv.id
 GROUP BY m.nom, cv.codi, cv.pressupost
 ORDER BY pendiente DESC;
 
-
 -- ============================================================================
--- 7. Documentación y trazabilidad (solo conteos, sin exponer nombres de archivo)
+-- 7. Documentación y trazabilidad (solo conteos)
 -- ============================================================================
 
 SELECT
@@ -179,11 +163,8 @@ LEFT JOIN document_actuacio d ON d.actuacio_id = a.id
 GROUP BY ta.nom
 ORDER BY documentos_adjuntos DESC;
 
-
 -- ============================================================================
 -- 8. Carga de trabajo por técnico — SOLO EL ID, nunca tecnic.nom
---    (si necesitás mostrar esto en algún lado público, referite a "Técnico 1",
---     "Técnico 2"... nunca hagas JOIN con tecnic.nom fuera de un entorno local)
 -- ============================================================================
 
 SELECT
