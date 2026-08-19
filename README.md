@@ -80,7 +80,9 @@ El dashboard tuvo un bug real en producción — detectado por reporte de usuari
 - **Integraciones**: consumo de web service REST externo, sincronización periódica
 - **Analítica**: modelado dimensional para reporting (por isla, municipio, tipo de actuación, técnico)
 
-## Sitio publicado
+## 7. EDA sobre el esquema real
+
+Además del dashboard sintético, el repositorio incluye consultas de exploración de datos escritas contra el **esquema real** (no contra datos reales — el archivo no contiene ningún dato, solo definiciones de consultas diseñadas para nunca exponer columnas con información personal). Ver [`sql/README.md`](sql/README.md) y [`sql/eda_real.sql`](sql/eda_real.sql).
 
 → **[gdaguerre-dot.github.io/SIE-baleares-case-study](https://gdaguerre-dot.github.io/SIE-baleares-case-study/)**
 
@@ -97,10 +99,15 @@ sie-baleares-case-study/
 │   ├── er-diagram.md          modelo entidad-relación (Mermaid)
 │   ├── state-machine.md       flujo de estados y fases (Mermaid)
 │   ├── permisos.md            matriz de permisos por perfil × fase
-│   
-│         
-└── qa/                       
-    ├── README.md               la historia del bug, diagnóstico y fix
-    ├── test-select-illa.js     test automatizado (Playwright)
-    └── mock_chart.js           stub usado para testear sin depender del CDN
+│   └── assets/
+│       └── dashboard.png      misma captura, copiada aquí para que Pages pueda servirla
+├── qa/                        proceso de detección y corrección de un bug real
+│   ├── README.md               la historia del bug, diagnóstico y fix
+│   ├── test-select-illa.js     test automatizado (Playwright)
+│   └── mock_chart.js           stub usado para testear sin depender del CDN
+└── sql/                       tres scripts SQL (ver sql/README.md)
+    ├── README.md               cuál es reproducible y cuál no, y por qué
+    ├── sie_practica.sql        100% reproducible — datos sintéticos autogenerados
+    ├── exploracion_inicial.sql  reconocimiento del esquema real (information_schema)
+    └── eda_real.sql            consultas de negocio contra el esquema real
 ```
