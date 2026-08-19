@@ -21,6 +21,3 @@ Ambos son seguros para un repositorio público aunque documenten trabajo sobre d
 
 **No subir nunca a este repositorio**: la base de datos real convertida (`bd_sie_postgres.sql`) ni ningún resultado exportado (CSV, capturas) de correr estas consultas contra los datos reales.
 
-## Regla al agregar una consulta nueva a `exploracion_inicial.sql` o `eda_real.sql`
-
-Antes de agregarla, preguntate: *"¿el resultado de esto podría contener el nombre de una persona, un email, un teléfono o una URL interna?"* Si la respuesta es sí, agregala igual pero dejá anotado que es solo para uso local — nunca para pegar el resultado en ningún lado público, ni siquiera como captura de pantalla.
