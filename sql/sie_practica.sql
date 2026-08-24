@@ -1,5 +1,4 @@
 -- ============================================================================
--- ============================================================================
 -- SIE Balears — Script de práctica SQL (VERSIÓN CORREGIDA)
 -- Fix: los picks aleatorios de FK (centre_id, subtipus_id, estat_id, tecnic_id,
 -- data_entrada, y el centre_id de centre_conveni) usaban una subconsulta NO
@@ -10,7 +9,6 @@
 -- MISMO centro/subtipo/estado/fecha. Fix: forzar correlación trivial con la
 -- fila externa (WHERE s > 0 / WHERE c.id > 0) para impedir que el planner
 -- la trate como constante.
--- ============================================================================
 -- ============================================================================
 
 DROP SCHEMA IF EXISTS sie CASCADE;
