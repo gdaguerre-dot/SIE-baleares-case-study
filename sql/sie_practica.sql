@@ -1,5 +1,16 @@
 -- ============================================================================
--- SIE Balears — Script de práctica SQL 
+-- ============================================================================
+-- SIE Balears — Script de práctica SQL (VERSIÓN CORREGIDA)
+-- Fix: los picks aleatorios de FK (centre_id, subtipus_id, estat_id, tecnic_id,
+-- data_entrada, y el centre_id de centre_conveni) usaban una subconsulta NO
+-- correlacionada del tipo (SELECT id FROM tabla ORDER BY random() LIMIT 1).
+-- PostgreSQL, al no depender esa subconsulta de ninguna columna de la fila
+-- externa, la trata como un InitPlan y la ejecuta UNA sola vez para toda la
+-- sentencia INSERT ... SELECT — con lo que las 500 filas terminaban con el
+-- MISMO centro/subtipo/estado/fecha. Fix: forzar correlación trivial con la
+-- fila externa (WHERE s > 0 / WHERE c.id > 0) para impedir que el planner
+-- la trate como constante.
+-- ============================================================================
 -- ============================================================================
 
 DROP SCHEMA IF EXISTS sie CASCADE;
