@@ -12,6 +12,18 @@ Autocontenido: crea su propio esquema (`CREATE TABLE`) y genera sus propios dato
 >
 > El script fue corregido el 23/08/2026: la versión original tenía un bug real donde `centre_id`, `subtipus_id`, `estat_id` y `data_entrada` no variaban entre filas, porque PostgreSQL trataba las subconsultas `(SELECT id FROM tabla ORDER BY random() LIMIT 1)` como no correlacionadas y las ejecutaba una sola vez para las 500 filas (`InitPlan`). El fix fuerza una correlación trivial (`WHERE s > 0`) con la fila del `generate_series` para garantizar que cada fila obtenga su propio valor aleatorio.
 
+> **Verificación del fix.** Se corrió el script corregido contra PostgreSQL 16 real y se midió la cardinalidad de valores distintos por columna antes y después, sobre las 500 filas de `actuacions`:
+>
+> | Columna | Antes del fix (valores distintos / 500) | Después del fix |
+> |---|---:|---:|
+> | `centre_id` | 1 | 60 |
+> | `subtipus_id` | 1 | 27 |
+> | `estat_id` | 1 | 10 |
+> | `data_entrada` | 1 | 330 |
+> | `tecnic_id` | 2 | 4 (+ NULL ~15%) |
+>
+> `pressupost` no se vio afectada porque ahí `random()` se usa directo en el SELECT, sin subconsulta — de ahí que esa columna sí variara correctamente incluso en la versión con el bug. Los agregados se extrajeron con `jsonb_object_agg`/`jsonb_agg` directamente desde SQL (sin transcripción manual) y el objeto `AGG` de `docs/dashboard.html` corresponde a esa salida real: 500 actuaciones, repartidas Mallorca 253 / Menorca 118 / Eivissa 97 / Formentera 32.
+
 ## 2. Documentación de proceso real — `exploracion_inicial.sql` y `eda_real.sql`
 
 Estos dos corren contra el esquema real del sistema (`sie_real`), reconstruido a partir de un dump de producción que **no está en este repositorio** por confidencialidad. Documentan preguntas y consultas reales que se hicieron, pero no se pueden ejecutar sin esos datos.
